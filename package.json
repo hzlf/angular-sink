@@ -1,0 +1,33 @@
+{
+  "name": "PROJECT_NAME",
+  "description": "DESCRIPTION",
+  "version": "0.1.0",
+  "homepage": "none",
+  "author": {
+    "name": "TEAM_NAME",
+    "url": "none"
+  },
+  "repository": {
+    "type": "git",
+    "url": "none"
+  },
+  "bugs": {
+    "url": "none"
+  },
+  "licenses": [
+    {
+      "type": "none",
+      "url": "none"
+    }
+  ],
+  "dependencies": { },
+  "devDependencies": { },
+  "keywords": [ ],
+  "engines": {
+    "node": ">= 0.6.0"
+  },
+  "main": "lib/glob",
+  "scripts": {
+    "test": "grunt test"
+  }
+}
