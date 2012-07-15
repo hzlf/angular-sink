@@ -29,7 +29,11 @@ module.exports = function(grunt) {
     shell: {
       compass: {
         command: 'compass compile'
-      }
+      },
+	  // open chrome to do end to end testing
+	  chrome_e2e_tests: {
+		command: 'google-chrome --no-default-browser-check --no-first-run --disable-default-apps http://localhost:3000/runner_e2e.html'
+	  }
     },
 
 	// generate application cache manifest
@@ -40,17 +44,18 @@ module.exports = function(grunt) {
 	// Jasmine headless test through PhantomJS
     // https://github.com/creynders/grunt-jasmine-task
     jasmine: {
-      all: ['test/unit/**/runner.html'],
-	  e2e: ['test/e2e/**/runner_e2e.html']
+      unit: ['test/**/runner.html']
     },
+
 
 
 	//server configuration
 	//very useful command in combination w/ reload and watch
 	server: {
 		port: 8000,
-		base: 'app'  // automatic point to app/index.html
+		base: 'app'  // points to app/index.html
 	},
+
 
 	// reload configuration
 	// be sure to install livereload server on your OS
@@ -272,16 +277,29 @@ module.exports = function(grunt) {
   // -------------------
 
   //Additional tasks
+  //----------------
   grunt.loadNpmTasks('grunt-jasmine-task');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-coffee');
   grunt.loadNpmTasks('grunt-reload');
 
-  // Alias the `test` task to run the `jasmine` task instead
-  grunt.registerTask('test', 'jasmine');
+  // Testing tasks
+  // -------------
+  grunt.registerTask('unit', 'jasmine:unit');
+  // Default 'test' alias to unit testing
+  grunt.registerTask('test', 'unit');
+  // This task launches a simple server for testing purposes (e2e mainly)
+  var connect = require('connect');
+  grunt.registerTask('server_tests', 'server for testing purposes', function() {
+	grunt.log.writeln('Starting test server at localhost:3000');
+    connect(connect.static('test')).listen(3000);
+  });
+  // End to end tests are not headless. Use google-chrome by default
+  grunt.registerTask('e2e', 'server_tests shell:chrome_e2e_tests');
 
-  // Default task. Run it w/ `grunt`
-  // Serve the app on localhost:8000 and watch for file changes
+
+  // Default task. Run it w/ plain `grunt`
+  // Serve the app on localhost:8000/app and watch for file changes
   grunt.registerTask('default', 'server reload watch');
 
   //build all-in-one task
