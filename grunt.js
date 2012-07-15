@@ -19,8 +19,8 @@ module.exports = function(grunt) {
 	// coffee to js compilation
     coffee: {
       dist: {
-        src: 'js/**/*.coffee',
-        dest: 'js'
+        src: 'app/js/**/*.coffee',
+        dest: 'app/js'
       }
     },
 
@@ -40,8 +40,17 @@ module.exports = function(grunt) {
 	// Jasmine headless test through PhantomJS
     // https://github.com/creynders/grunt-jasmine-task
     jasmine: {
-      all: ['test/**/*.html']
+      all: ['test/unit/**/runner.html'],
+	  e2e: ['test/e2e/**/runner_e2e.html']
     },
+
+
+	//server configuration
+	//very useful command in combination w/ reload and watch
+	server: {
+		port: 8000,
+		base: 'app'  // automatic point to app/index.html
+	},
 
 	// reload configuration
 	// be sure to install livereload server on your OS
@@ -50,96 +59,128 @@ module.exports = function(grunt) {
 		port: 35729, // LR default
 		liveReload: {}
 	},
+
 	// default watch configuration
+	// On file changes, trigger testing, coffe compilation,
+	// compass compilation, reload browser, etc
     watch: {
       coffee: {
         files: '<config:coffee.dist.src>',
         tasks: 'coffee'
       },
       compass: {
-        files: ['css/sass/**/*.sass', 'css/sass/**/*.scss'],
+        files: ['app/css/sass/**/*.sass', 'app/css/sass/**/*.scss'],
         tasks: 'shell:compass'
       },
       reload: {
-        files: ['css/**/*.css', 'js/**/*.js', 'img/**/*'],
+        files: [
+			'app/css/**/*.css',
+			'app/js/**/*.js',
+			'app/img/**/*',
+			'app/*.html',
+			'app/partials/**/*.html'
+        ],
         tasks: 'reload'
-      }
+      },
+	  test: {
+		files: [
+			'test/**/*.html',
+			'test/**/*.js',
+			'app/js/**/*.js',
+			'app/*.html',
+			'app/partials/**/*.html'
+		],
+		tasks: 'test'
+	  }
     },
 
 	// default lint configuration, change this to match your setup:
     // https://github.com/cowboy/grunt/blob/master/docs/task_lint.md#lint-built-in-task
     lint: {
-      files: [
-		  //'test/spec/*.js',  // uncomment to enable tests lint
-		  'js/main.js'
-      ]
+		  src: 'app/js/**/*.js',
+		  tests: ['test/unit/**/*.js', 'test/e2e/**/*.js'],
     },
 
 	// specifying JSHint options and globals
     // https://github.com/cowboy/grunt/blob/master/docs/task_lint.md#specifying-jshint-options-and-globals
     jshint: {
+	  // Defaults (for both src and tests)
       options: {
-		"node"     : true,
-		"es5"      : true,
-		"browser"  : true,
-		"jquery"   : true,
-		"require"  : true,
+		  "node"     : true,
+		  "es5"      : true,
+		  "browser"  : true,
+		  "jquery"   : true,
+		  "require"  : true,
 
-		"maxerr"   : 100,
-		"passfail" : false,
+		  "maxerr"   : 100,
+		  "passfail" : false,
 
-		"asi"      : false,
-		"bitwise"  : true,
-		"boss"     : false,
-		"curly"    : true,
-		"debug"    : true,
-		"devel"    : false,
-		"eqeqeq"   : true,
-		"eqnull"   : false,
-		"evil"     : false,
-		"forin"    : true,
-		"immed"    : true,
-		"laxbreak" : false,
-		"newcap"   : true,
-		"noarg"    : true,
-		"noempty"  : true,
-		"nonew"    : true,
-		"nomen"    : false,
-		"onevar"   : false,
-		"plusplus" : false,
-		"regexp"   : true,
-		"undef"    : true,
-		"sub"      : false,
-		"strict"   : false,
-		"white"    : false,
-		"latedef"  : true,
-		"trailing" : true,
-
-		"predef": [
-			"jasmine",
-			"spyOn",
-			"it",
-			"xit",
-			"describe",
-			"xdescribe",
-			"expect",
-			"beforeEach",
-			"afterEach",
-			"waitsFor",
-			"runs",
-		],
-      },
-      globals: {
-		"jQuery": true,
-		"jasmine": true,
-	  },
-    },
+		  "asi"      : false,
+		  "bitwise"  : true,
+		  "boss"     : false,
+		  "curly"    : true,
+		  "debug"    : true,
+		  "devel"    : false,
+		  "eqeqeq"   : true,
+		  "eqnull"   : false,
+		  "evil"     : false,
+		  "forin"    : true,
+		  "immed"    : true,
+		  "laxbreak" : false,
+		  "newcap"   : true,
+		  "noarg"    : true,
+		  "noempty"  : true,
+		  "nonew"    : true,
+		  "nomen"    : false,
+		  "onevar"   : false,
+		  "plusplus" : false,
+		  "regexp"   : true,
+		  "undef"    : true,
+		  "sub"      : false,
+		  "strict"   : false,
+		  "white"    : false,
+		  "latedef"  : true,
+		  "trailing" : true,
+		},
+		//just src code
+		src: {
+			globals: {
+				"jQuery": true,
+			}
+		},
+		// just for tests
+		tests: {
+			options: {
+				"predef": [
+					"jasmine",
+					"spyOn",
+					"it",
+					"xit",
+					"describe",
+					"xdescribe",
+					"expect",
+					"beforeEach",
+					"afterEach",
+					"waitsFor",
+					"runs",
+				]
+			},
+			globals: {
+				"jasmine": true,
+			}
+		}
+	},
 
 
 
     // -------------------
     // Build configuration
     // -------------------
+	//
+	// TODO: Lots of changes in this section are still needed
+	// The ideia is to put a top-level folder 'dist' containing
+	// the minified files and build data
+	//
 
 	// the staging directory used during the process
     staging: 'intermediate',
@@ -155,7 +196,7 @@ module.exports = function(grunt) {
 
 	// concat css/**/*.css files, inline @import, output a single minified css
     css: {
-      'css/style.min.css': ['css/**/*.css']
+      'dist/css/style.css': ['app/css/**/*.css']
     },
 
 	// Renames JS/CSS to prepend a hash of their contents for easier
@@ -187,11 +228,10 @@ module.exports = function(grunt) {
     concat: {
       dist: {
         src: [
-			'js/plugins.js',
-			'js/vendor/**/*.js',
-			'js/main.js'
+			'app/vendor/**/*.js',
+			'app/js/**/*.js'
         ],
-        dest: 'js/<%= pkg.name %>-<%= pkg.version %>.js'
+        dest: 'dist/js/<%= pkg.name %>-<%= pkg.version %>.js'
       }
     },
 
@@ -199,8 +239,8 @@ module.exports = function(grunt) {
     // https://github.com/cowboy/grunt/blob/master/docs/task_min.md
     min: {
       dist: {
-        src: 'js/<%= pkg.name %>-<%= pkg.version %>.js',
-        dest: 'js/<%= pkg.name %>-<%= pkg.version %>.min.js'
+        src: 'dist/js/<%= pkg.name %>-<%= pkg.version %>.js',
+        dest: 'dist/js/<%= pkg.name %>-<%= pkg.version %>.min.js'
       }
     },
 

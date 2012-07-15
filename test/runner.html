@@ -1,26 +1,28 @@
 <!doctype html>
+<html lang="en">
 <head>
   <title>Jasmine Spec Runner</title>
 
-  <link rel="stylesheet" href="lib/jasmine-1.2.0/jasmine.css">
-  <script src="lib/jasmine-1.2.0/jasmine.js"></script>
-  <script src="lib/jasmine-1.2.0/jasmine-html.js"></script>
+  <link rel="stylesheet" href="lib/jasmine/jasmine.css">
+  <script src="lib/jasmine/jasmine.js"></script>
+  <script src="lib/jasmine/jasmine-html.js"></script>
 
-  <!-- include source files here... -->
-  <script src="../js/main.js"></script>
+	<!--Vendor-->
+  <script src="../app/vendor/angular.min.js"></script>
 
-  <!-- include spec files here... -->
-  <!--
-    the `src/introduction.js` include the Jasmine introduction, with a
-    lot of inline comments to help you get started with Jasmine. This is
-    meant to be replaced by your own tests.
 
-    The same introduction than the Jasmine doc page:
-    http://pivotal.github.com/jasmine/
+	<!--Project src files-->
+	<script src="../app/js/controllers.js"></script>
+	<script src="../app/js/app.js"></script>
+	<!--<script src="../app/js/helpers.js"></script>-->
 
-    https://raw.github.com/pivotal/jasmine/gh-pages/src/introduction.js
-  -->
-  <script src="spec/introduction.js"></script>
+
+  <!-- include test files here... -->
+  <script src="unit/controllersSpec.js"></script>
+  <!--<script src="e2e/scenarios.js"></script>-->
+
+
+
 
   <!--
     Choose a jasmine reporter.
@@ -41,8 +43,8 @@
     reporters like a jasmine.TrivialReporter or jasmine.HtmlReporter
     to see the results py pointing your browser to your spec runner.
   -->
+  <script src="lib/jasmine/runner/headless.js"></script>
 
-  <script src="runner/headless.js"></script>
 </head>
 <body>
 
