@@ -43,12 +43,18 @@ chromium.org/developers/how-tos/chrome-frame-getting-started -->
 	
 		<p>We have {{ phones.length }} phones here.</p>
 
-		<ul>
-		  <li ng-repeat="phone in phones">
-				{{ phone.name }}
-				<p>{{ phone.snippet }}</p>
-			</li>
-		</ul>
+		<div class="one-third columns">
+			Search: <input ng-model="query">
+		</div>
+
+		<div class="two-thirds columns">
+			<ul class=phones>
+				<li ng-repeat="phone in phones | filter:query">
+					{{ phone.name }}
+					<p>{{ phone.snippet }}</p>
+				</li>
+			</ul>
+		</div>
 
 		<!--<table>-->
 			<!--<tr> <th>row number</th> </tr>-->

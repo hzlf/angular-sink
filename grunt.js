@@ -32,7 +32,7 @@ module.exports = function(grunt) {
       },
 	  // open chrome to do end to end testing
 	  chrome_e2e_tests: {
-		command: 'google-chrome --no-default-browser-check --no-first-run --disable-default-apps http://localhost:3000/runner_e2e.html'
+		command: 'google-chrome --no-default-browser-check --no-first-run --disable-default-apps http://localhost:3000/test/runner_e2e.html'
 	  }
     },
 
@@ -276,8 +276,15 @@ module.exports = function(grunt) {
   // Tasks configuration
   // -------------------
 
-  //Additional tasks
-  //----------------
+  // Default task. Run it w/ plain `grunt`
+  // Serve the app on localhost:8000/app and watch for file changes
+  grunt.registerTask('default', 'server reload watch');
+
+  //build all-in-one task
+  grunt.registerTask('build', 'lint concat min')
+
+  //Additional plugin tasks
+  //-----------------------
   grunt.loadNpmTasks('grunt-jasmine-task');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-coffee');
@@ -290,19 +297,15 @@ module.exports = function(grunt) {
   grunt.registerTask('test', 'unit');
   // This task launches a simple server for testing purposes (e2e mainly)
   var connect = require('connect');
+  var path = require('path');
   grunt.registerTask('server_tests', 'server for testing purposes', function() {
-	grunt.log.writeln('Starting test server at localhost:3000');
-    connect(connect.static('test')).listen(3000);
+	  var base = path.resolve('.'), port = 3000;
+	  var middleware = [connect.static(base), connect.directory(base)];
+	  grunt.log.writeln('Starting test server at localhost:' + port + '/test/');
+	  connect.apply(null, middleware).listen(port);
   });
   // End to end tests are not headless. Use google-chrome by default
   grunt.registerTask('e2e', 'server_tests shell:chrome_e2e_tests');
 
-
-  // Default task. Run it w/ plain `grunt`
-  // Serve the app on localhost:8000/app and watch for file changes
-  grunt.registerTask('default', 'server reload watch');
-
-  //build all-in-one task
-  grunt.registerTask('build', 'lint concat min')
 
 };
