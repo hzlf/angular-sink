@@ -106,7 +106,7 @@ module.exports = function(grunt) {
 		  tests: ['test/unit/**/*.js', 'test/e2e/**/*.js']
     },
 	// JSHint options and globals
-    jshint: '<json:jshintrc.json>',
+    jshint: '<json:.jshintrc.json>',
 
 
 
