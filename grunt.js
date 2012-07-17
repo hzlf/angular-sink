@@ -1,8 +1,3 @@
-// Build information
-var staging = 'intermediate/',
-	output = 'publish/';
-
-
 // Grunt configuration:
 // https://github.com/cowboy/grunt/blob/master/docs/getting_started.md
 
@@ -33,7 +28,7 @@ module.exports = function(grunt) {
     // https://github.com/sindresorhus/grunt-shell#grunt-shell
     shell: {
       compass: {
-        command: 'compass compile'
+        command: 'compass compile -c compass_config.rb'
       },
 	  // open chrome to do end to end testing
 	  chrome_e2e_tests: {
@@ -62,18 +57,15 @@ module.exports = function(grunt) {
 		base: 'app'  // points to app/index.html
 	},
 
-
 	// reload configuration
-	// be sure to install livereload server on your OS
-	// and the livereload extension to your browser
+	// be sure to install livereload server and the livereload browser extension
 	reload: {
 		port: 35729, // LR default
 		liveReload: {}
 	},
 
 	// default watch configuration
-	// On file changes, trigger testing, coffe compilation,
-	// compass compilation, reload browser, etc
+	// On file changes trigger tests, coffe & compass compilation, reload browser
     watch: {
       coffee: {
         files: '<config:coffee.dist.src>',
@@ -105,178 +97,93 @@ module.exports = function(grunt) {
 	  }
     },
 
-	// default lint configuration, change this to match your setup:
-    // https://github.com/cowboy/grunt/blob/master/docs/task_lint.md#lint-built-in-task
+
+
+	// Linting JS files
+	//-----------------
+	// What files to lint
     lint: {
 		  src: 'app/js/**/*.js',
 		  tests: ['test/unit/**/*.js', 'test/e2e/**/*.js']
     },
+	// JSHint options and globals
+    jshint: '<json:jshintrc.json>',
 
-	// specifying JSHint options and globals
-    // https://github.com/cowboy/grunt/blob/master/docs/task_lint.md#specifying-jshint-options-and-globals
-    jshint: {
-	  // Defaults (for both src and tests)
-      options: {
-		  "node"     : true,
-		  "es5"      : true,
-		  "browser"  : true,
-		  "jquery"   : true,
-		  "require"  : true,
 
-		  "maxerr"   : 100,
-		  "passfail" : false,
 
-		  "asi"      : false,
-		  "bitwise"  : true,
-		  "boss"     : false,
-		  "curly"    : true,
-		  "debug"    : true,
-		  "devel"    : false,
-		  "eqeqeq"   : true,
-		  "eqnull"   : false,
-		  "evil"     : false,
-		  "forin"    : true,
-		  "immed"    : true,
-		  "laxbreak" : false,
-		  "newcap"   : true,
-		  "noarg"    : true,
-		  "noempty"  : true,
-		  "nonew"    : true,
-		  "nomen"    : false,
-		  "onevar"   : false,
-		  "plusplus" : false,
-		  "regexp"   : true,
-		  "undef"    : true,
-		  "sub"      : false,
-		  "strict"   : false,
-		  "white"    : false,
-		  "latedef"  : true,
-		  "trailing" : true
-		},
-		globals: {
-			"angular": true
-		},
-		//just src code
-		src: {
-			globals: {
-				"jQuery": true
-			}
-		},
-		// just for tests
-		tests: {
-			options: {
-				"predef": [
-					"jasmine",
-					"spyOn",
-					"it",
-					"xit",
-					"describe",
-					"xdescribe",
-					"expect",
-					"beforeEach",
-					"afterEach",
-					"waitsFor",
-					"runs",
-				]
-			},
-			globals: {
-				"jasmine": true
-			}
-		}
+
+	// -------------------
+	// Build configuration
+	// -------------------
+
+	// Folder structure
+	//-----------------
+	// Build locations
+	staging: 'app_intermediate/', // the staging directory used during the process
+	output: 'app_publish/', // final build output
+	// create staging (intermediate) directory
+	mkdirs: {
+		staging: 'app/' // Copy app. Files in .gitignore are not gonna be copied
+		// At the end of the build, staging is gonna be copied as publish
 	},
 
 
+	// CSS treatment
+	//--------------
+	// concat & minify css files (inline @import, output a single minified css)
+	css: {
+		'css/bundle.min.css': ['app/css/**/*.css']  // here it needs the full path (app/css/..)
+	},
 
-    // -------------------
-    // Build configuration
-    // -------------------
-	//
 
-	// the staging directory used during the process
-    staging: staging,
-    // final build output
-    output: output,
+	// JS treatment
+	//-------------
+	// concat js files
+	concat: {
+		'js/bundle.js': ['vendor/**/*.js', 'js/**/*.js']
+	},
+	// minify js files
+	min: {
+		'js/bundle.min.js': ['js/bundle.js']
+	},
 
-	// filter any files matching one of the below pattern during mkdirs task
-    // the pattern in the .gitignore file should work too.
-    //exclude: '.git* build/** node_modules/** grunt.js package.json *.md css/sass/'.split(' '),
-    mkdirs: {
-	  staging: 'app/'
-    },
 
-	// concat css/**/*.css files, inline @import, output a single minified css
-    css: {
-      'css/bundle_css.css': ['app/css/**/*.css']
-    },
-
-	// Renames JS/CSS to prepend a hash of their contents for easier versioning
-    rev: {
-      js: 'js/**/*.js',
-      css: 'css/**/*.css',
-      img: 'img/**'
-    },
-
+	// HTML references treatment
+	//--------------------------
+	// Renames JS/CSS, by prepending a hash of their contents (versioning)
+	rev: {
+		js: 'js/**/*.js',
+		css: 'css/**/*.css',
+		img: 'img/**'
+	},
 	// update references in html to revved files
-    usemin: {
-      html: ['app/**/*.html'],
-      css: ['app/**/*.css']
-    },
-
+	// Don't forget to pu the classic comment build notation on the html files
+	// <!-- build:css css/bundle.min.css --> ... css block ... <--! endbuild -->
+	// <!-- build:js js/bundle.min.js--> ... js block ... <--! endbuild -->
+	usemin: {
+		html: ['**/*.html'],
+		css: ['**/*.css']
+	},
 	// html minification
-    html: {
-      files: ['app/**/*.html']
-    },
-
-	// Optimizes JPGs and PNGs (with jpegtran & optipng)
-    img: {
-      dist: '<config:rev.img>'
-    },
+	html: {
+		files: ['**/*.html']
+	},
 
 
-	rjs: {
-      modules: [{
-        name: 'main'
-      }],
-      dir: 'js',
-      appDir: 'app/js',
-      baseUrl: './',
-      pragmas: {
-        doExclude: true
-      },
-      skipModuleInsertion: false,
-      optimizeAllPluginResources: true,
-      findNestedDependencies: true
-    },
-
-    // specifying UglifyJS options:
-    // https://github.com/cowboy/grunt/blob/master/docs/task_min.md#specifying-uglifyjs-options
-    uglify: {}
+	// Images treatment
+	//-----------------
+	// Optimizes JPGs and PNGs (install jpegtran & optipng system-wide)
+	img: {
+		dist: '<config:rev.img>'
+	}
 
   });
-
-  // default concat configuration, change this to match your setup:
-  // https://github.com/cowboy/grunt/blob/master/docs/task_concat.md
-  var concat = grunt.config('concat') || {};
-  concat[ 'js/bundle_js.js'] = ['vendor/**/*.js', 'js/**/*.js'];
-  grunt.config('concat', concat);
-
-  // default min configuration, change this to match your setup:
-  // https://github.com/cowboy/grunt/blob/master/docs/task_min.md
-  var min = grunt.config('min') || {};
-  min[ 'js/bundle_js.min.js'] = [ 'js/bundle_js.js'];
-  grunt.config('min', min);
 
 
   // -------------------
   // Tasks configuration
   // -------------------
 
-  // Default task. Run it w/ plain `grunt`
-  // Serve the app on localhost:8000/app and watch for file changes
-  grunt.registerTask('default', 'server reload watch');
-
-  //build all-in-one task
-  grunt.registerTask('build', 'lint concat min')
 
   //Additional plugin tasks
   //-----------------------
@@ -286,26 +193,46 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-reload');
   grunt.loadNpmTasks('node-build-script');
 
+
+  // Default tasks
+  //--------------
+  // `grunt` & `grunt build`
+  // Sentinel task. Very useful in development mode
+  // Serve the app on localhost:8000/app and watch for file changes
+  // Run it w/ plain `grunt`
+  grunt.registerTask('default', 'server reload watch');
+
+  // Build task
+  // Builds a publish folder with the app ready to be deployed
+  // Run it with `grunt build`
+  grunt.renameTask('build', '_build'); // node-build-script gives a build task
+  grunt.registerTask('build', '_build:default')
+
+
   //Preprocessor tasks
   //------------------
+  // `grunt compass`
   grunt.registerTask('compass', 'shell:compass');
+
 
   // Testing tasks
   // -------------
+  // `grunt test` & `grunt e2e`
   grunt.registerTask('unit', 'jasmine:unit');
-  // Default 'test' alias to unit testing
-  grunt.registerTask('test', 'unit');
+  grunt.registerTask('test', 'unit'); // Default 'test' (alias to unit testing)
+
   // This task launches a simple server for testing purposes (e2e mainly)
   var connect = require('connect');
   var path = require('path');
-  grunt.registerTask('server_tests', 'server for testing purposes', function() {
+  grunt.registerTask('server_testing', 'server for testing purposes', function() {
 	  var base = path.resolve('.'), port = 3000;
 	  var middleware = [connect.static(base), connect.directory(base)];
 	  grunt.log.writeln('Starting test server at localhost:' + port + '/test/');
 	  connect.apply(null, middleware).listen(port);
   });
+
   // End to end tests are not headless. Use google-chrome by default
-  grunt.registerTask('e2e', 'server_tests shell:chrome_e2e_tests');
+  grunt.registerTask('e2e', 'server_testing shell:chrome_e2e_tests');
 
 
 };

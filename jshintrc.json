@@ -1,0 +1,75 @@
+{
+	"options": {
+		"node"     : true,
+		"es5"      : true,
+		"browser"  : true,
+		"jquery"   : true,
+		"require"  : true,
+
+		"maxerr"   : 100,
+		"passfail" : false,
+
+		"asi"      : false,
+		"bitwise"  : true,
+		"boss"     : false,
+		"curly"    : true,
+		"debug"    : true,
+		"devel"    : false,
+		"eqeqeq"   : true,
+		"eqnull"   : false,
+		"evil"     : false,
+		"forin"    : true,
+		"immed"    : true,
+		"laxbreak" : false,
+		"newcap"   : true,
+		"noarg"    : true,
+		"noempty"  : true,
+		"nonew"    : true,
+		"nomen"    : false,
+		"onevar"   : false,
+		"plusplus" : false,
+		"regexp"   : true,
+		"undef"    : true,
+		"sub"      : false,
+		"strict"   : false,
+		"white"    : false,
+		"latedef"  : true,
+		"trailing" : true
+	},
+	"globals": {
+		"angular": true
+	},
+
+
+
+	"src": {
+		"globals": {
+			"jQuery": true
+		}
+	},
+
+
+
+	"tests": {
+		"options": {
+			"predef": [
+				"jasmine",
+				"spyOn",
+				"it",
+				"xit",
+				"describe",
+				"xdescribe",
+				"expect",
+				"beforeEach",
+				"afterEach",
+				"waitsFor",
+				"runs"
+			]
+		},
+		"globals": {
+			"jasmine": true
+		}
+	}
+
+
+}
