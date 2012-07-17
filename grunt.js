@@ -51,7 +51,6 @@ module.exports = function(grunt) {
 
 
 	// server configuration
-	// very useful command in combination w/ reload and watch
 	server: {
 		port: 8000,
 		base: 'app'  // points to app/index.html
@@ -119,8 +118,8 @@ module.exports = function(grunt) {
 	// Folder structure
 	//-----------------
 	// Build locations
-	staging: 'app_intermediate/', // the staging directory used during the process
-	output: 'app_publish/', // final build output
+	staging: 'build/staging/', // the staging directory used during the process
+	output: 'build/publish/', // final build output
 	// create staging (intermediate) directory
 	mkdirs: {
 		staging: 'app/' // Copy app. Files in .gitignore are not gonna be copied
@@ -132,7 +131,7 @@ module.exports = function(grunt) {
 	//--------------
 	// concat & minify css files (inline @import, output a single minified css)
 	css: {
-		'css/bundle.min.css': ['app/css/**/*.css']  // here it needs the full path (app/css/..)
+		'css/bundle.min.css': ['css/**/*.css']
 	},
 
 
@@ -140,11 +139,13 @@ module.exports = function(grunt) {
 	//-------------
 	// concat js files
 	concat: {
-		'js/bundle.js': ['vendor/**/*.js', 'js/**/*.js']
+		'js/bundle.js': ['js/**/*.js'],
+		'js/bundle_vendor.js': ['vendor/**/*.js']
 	},
 	// minify js files
 	min: {
-		'js/bundle.min.js': ['js/bundle.js']
+		'js/bundle.min.js': ['js/bundle.js'],
+		'js/bundle_vendor.min.js': ['js/bundle_vendor.js']
 	},
 
 
@@ -191,7 +192,17 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-coffee');
   grunt.loadNpmTasks('grunt-reload');
+
+  // node-build-script is gonna overwrite grunt server/reload task
+  // I want to keep the original grunt tasks
+  // TODO: Figure out a way to selectively load npmPlugin tasks
+  grunt.renameTask('reload', '_reload');
+  grunt.renameTask('server', '_server');
   grunt.loadNpmTasks('node-build-script');
+  grunt.renameTask('server', '_node-build-script_server');
+  grunt.renameTask('_server', 'server');
+  grunt.renameTask('reload', '_node-build-script_reload');
+  grunt.renameTask('_reload', 'reload');
 
 
   // Default tasks
