@@ -3,7 +3,7 @@ describe('PhoneCat App', function() {
 	describe('Phone list view', function(){
 
 		beforeEach(function() {
-			browser().navigateTo('../../app/index.html')
+			browser().navigateTo('../../app/index.html');
 		});
 
 		it('should filter the phone list as user types into the search box', function() {
