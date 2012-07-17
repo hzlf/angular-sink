@@ -185,15 +185,11 @@ module.exports = function(grunt) {
     // Build configuration
     // -------------------
 	//
-	// TODO: Lots of changes in this section are still needed
-	// The ideia is to put a top-level folder 'dist' containing
-	// the minified files and build data
-	//
 
 	// the staging directory used during the process
-    staging: 'intermediate',
+    staging: 'intermediate/',
     // final build output
-    output: 'publish',
+    output: 'publish/',
 
 	// filter any files matching one of the below pattern during mkdirs task
     // the pattern in the .gitignore file should work too.
@@ -201,29 +197,32 @@ module.exports = function(grunt) {
     mkdirs: {
       staging: '<config:exclude>'
     },
+	clean: {
+		staging: '<config:staging>',
+		output: '<config:publish>'
+	},
 
 	// concat css/**/*.css files, inline @import, output a single minified css
     css: {
-      'dist/css/style.css': ['app/css/**/*.css']
+      'publish/css/style.css': ['app/css/**/*.css']
     },
 
-	// Renames JS/CSS to prepend a hash of their contents for easier
-    // versioning
+	// Renames JS/CSS to prepend a hash of their contents for easier versioning
     rev: {
-      js: 'js/**/*.js',
-      css: 'css/**/*.css',
-      img: 'img/**'
+      js: 'app/js/**/*.js',
+      css: 'app/css/**/*.css',
+      img: 'app/img/**'
     },
 
 	// update references in html to revved files
     usemin: {
-      html: ['**/*.html'],
-      css: ['**/*.css']
+      html: ['app/**/*.html'],
+      css: ['app/**/*.css']
     },
 
 	// html minification
     html: {
-      files: ['**/*.html']
+      files: ['app/**/*.html']
     },
 
 	// Optimizes JPGs and PNGs (with jpegtran & optipng)
@@ -239,7 +238,7 @@ module.exports = function(grunt) {
 			'app/vendor/**/*.js',
 			'app/js/**/*.js'
         ],
-        dest: 'dist/js/<%= pkg.name %>-<%= pkg.version %>.js'
+        dest: 'intermediate/js/<%= pkg.name %>-<%= pkg.version %>.js'
       }
     },
 
@@ -247,8 +246,9 @@ module.exports = function(grunt) {
     // https://github.com/cowboy/grunt/blob/master/docs/task_min.md
     min: {
       dist: {
-        src: 'dist/js/<%= pkg.name %>-<%= pkg.version %>.js',
-        dest: 'dist/js/<%= pkg.name %>-<%= pkg.version %>.min.js'
+        src: 'intermediate/js/<%= pkg.name %>-<%= pkg.version %>.js',
+        dest: 'publish/js/main.js'
+        //dest: 'app/js/<%= pkg.name %>-<%= pkg.version %>.min.js'
       }
     },
 
@@ -257,7 +257,7 @@ module.exports = function(grunt) {
         name: 'main'
       }],
       dir: 'js',
-      appDir: 'js',
+      appDir: 'app/js',
       baseUrl: './',
       pragmas: {
         doExclude: true
@@ -292,6 +292,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-coffee');
   grunt.loadNpmTasks('grunt-reload');
+  grunt.loadNpmTasks('node-build-script');
+
+  //Preprocessor tasks
+  //------------------
+  grunt.registerTask('compass', 'shell:compass');
 
   // Testing tasks
   // -------------
