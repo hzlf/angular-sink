@@ -1,3 +1,8 @@
+// Build information
+var staging = 'intermediate/',
+	output = 'publish/';
+
+
 // Grunt configuration:
 // https://github.com/cowboy/grunt/blob/master/docs/getting_started.md
 
@@ -32,7 +37,8 @@ module.exports = function(grunt) {
       },
 	  // open chrome to do end to end testing
 	  chrome_e2e_tests: {
-		command: 'google-chrome --no-default-browser-check --no-first-run --disable-default-apps http://localhost:3000/test/runner_e2e.html'
+		command: 'google-chrome --no-default-browser-check --no-first-run'
+				+ '--disable-default-apps http://localhost:3000/test/runner_e2e.html'
 	  }
     },
 
@@ -49,8 +55,8 @@ module.exports = function(grunt) {
 
 
 
-	//server configuration
-	//very useful command in combination w/ reload and watch
+	// server configuration
+	// very useful command in combination w/ reload and watch
 	server: {
 		port: 8000,
 		base: 'app'  // points to app/index.html
@@ -187,31 +193,27 @@ module.exports = function(grunt) {
 	//
 
 	// the staging directory used during the process
-    staging: 'intermediate/',
+    staging: staging,
     // final build output
-    output: 'publish/',
+    output: output,
 
 	// filter any files matching one of the below pattern during mkdirs task
     // the pattern in the .gitignore file should work too.
-    exclude: '.git* build/** node_modules/** grunt.js package.json *.md css/sass/'.split(' '),
+    //exclude: '.git* build/** node_modules/** grunt.js package.json *.md css/sass/'.split(' '),
     mkdirs: {
-      staging: '<config:exclude>'
+	  staging: 'app/'
     },
-	clean: {
-		staging: '<config:staging>',
-		output: '<config:publish>'
-	},
 
 	// concat css/**/*.css files, inline @import, output a single minified css
     css: {
-      'publish/css/style.css': ['app/css/**/*.css']
+      'css/bundle_css.css': ['app/css/**/*.css']
     },
 
 	// Renames JS/CSS to prepend a hash of their contents for easier versioning
     rev: {
-      js: 'app/js/**/*.js',
-      css: 'app/css/**/*.css',
-      img: 'app/img/**'
+      js: 'js/**/*.js',
+      css: 'css/**/*.css',
+      img: 'img/**'
     },
 
 	// update references in html to revved files
@@ -230,27 +232,6 @@ module.exports = function(grunt) {
       dist: '<config:rev.img>'
     },
 
-	// default concat configuration, change this to match your setup:
-	// https://github.com/cowboy/grunt/blob/master/docs/task_concat.md
-    concat: {
-      dist: {
-        src: [
-			'app/vendor/**/*.js',
-			'app/js/**/*.js'
-        ],
-        dest: 'intermediate/js/<%= pkg.name %>-<%= pkg.version %>.js'
-      }
-    },
-
-	// default min configuration, change this to match your setup:
-    // https://github.com/cowboy/grunt/blob/master/docs/task_min.md
-    min: {
-      dist: {
-        src: 'intermediate/js/<%= pkg.name %>-<%= pkg.version %>.js',
-        dest: 'publish/js/main.js'
-        //dest: 'app/js/<%= pkg.name %>-<%= pkg.version %>.min.js'
-      }
-    },
 
 	rjs: {
       modules: [{
@@ -273,6 +254,17 @@ module.exports = function(grunt) {
 
   });
 
+  // default concat configuration, change this to match your setup:
+  // https://github.com/cowboy/grunt/blob/master/docs/task_concat.md
+  var concat = grunt.config('concat') || {};
+  concat[ 'js/bundle_js.js'] = ['vendor/**/*.js', 'js/**/*.js'];
+  grunt.config('concat', concat);
+
+  // default min configuration, change this to match your setup:
+  // https://github.com/cowboy/grunt/blob/master/docs/task_min.md
+  var min = grunt.config('min') || {};
+  min[ 'js/bundle_js.min.js'] = [ 'js/bundle_js.js'];
+  grunt.config('min', min);
 
 
   // -------------------
