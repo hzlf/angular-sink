@@ -32,8 +32,8 @@ module.exports = function(grunt) {
       },
 	  // open chrome to do end to end testing
 	  chrome_e2e_tests: {
-		command: 'google-chrome --no-default-browser-check --no-first-run'
-				+ '--disable-default-apps http://localhost:3000/test/runner_e2e.html'
+		command: 'google-chrome --no-default-browser-check --no-first-run' +
+				'--disable-default-apps http://localhost:3000/test/runner_e2e.html'
 	  }
     },
 
