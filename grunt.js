@@ -103,7 +103,7 @@ module.exports = function(grunt) {
     // https://github.com/cowboy/grunt/blob/master/docs/task_lint.md#lint-built-in-task
     lint: {
 		  src: 'app/js/**/*.js',
-		  tests: ['test/unit/**/*.js', 'test/e2e/**/*.js'],
+		  tests: ['test/unit/**/*.js', 'test/e2e/**/*.js']
     },
 
 	// specifying JSHint options and globals
@@ -145,7 +145,7 @@ module.exports = function(grunt) {
 		  "strict"   : false,
 		  "white"    : false,
 		  "latedef"  : true,
-		  "trailing" : true,
+		  "trailing" : true
 		},
 		globals: {
 			"angular": true
@@ -174,7 +174,7 @@ module.exports = function(grunt) {
 				]
 			},
 			globals: {
-				"jasmine": true,
+				"jasmine": true
 			}
 		}
 	},
@@ -254,7 +254,7 @@ module.exports = function(grunt) {
 
 	rjs: {
       modules: [{
-        name: 'main',
+        name: 'main'
       }],
       dir: 'js',
       appDir: 'js',
