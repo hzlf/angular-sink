@@ -147,10 +147,13 @@ module.exports = function(grunt) {
 		  "latedef"  : true,
 		  "trailing" : true,
 		},
+		globals: {
+			"angular": true
+		},
 		//just src code
 		src: {
 			globals: {
-				"jQuery": true,
+				"jQuery": true
 			}
 		},
 		// just for tests
