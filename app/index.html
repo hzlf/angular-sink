@@ -52,12 +52,21 @@ chromium.org/developers/how-tos/chrome-frame-getting-started -->
 		<p>We have {{ phones.length }} phones here.</p>
 
 		<div class="one-third columns">
-			Search: <input ng-model="query">
+			<p>Search: <input ng-model="query"></p>
+			<p id="status">Current filter: {{ query }}</p>
+			<div class="sort">
+				Sort by:
+					<select ng-model="orderProp">
+						<option value="name">Alphabetical</option>
+						<option value="age">Newest</option>
+					</select>
+			</div>
+			
 		</div>
 
 		<div class="two-thirds columns">
 			<ul class=phones>
-				<li ng-repeat="phone in phones | filter:query">
+				<li ng-repeat="phone in phones | filter:query | orderBy:orderProp">
 					{{ phone.name }}
 					<p>{{ phone.snippet }}</p>
 				</li>

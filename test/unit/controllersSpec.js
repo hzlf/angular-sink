@@ -19,6 +19,12 @@ describe('PhoneCat controllers', function() {
 			expect(scope.hello).toEqual("Hello World!");
 		});
 
+		it('should set the default value of orderProp model', function() {
+			expect(scope.orderProp).toBe('age');
+		});
+
+
+
 
 	});
 
