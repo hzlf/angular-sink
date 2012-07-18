@@ -62,7 +62,10 @@
 				"beforeEach",
 				"afterEach",
 				"waitsFor",
-				"runs"
+				"runs",
+                                "browser",
+                                "repeater",
+                                "input"
 			]
 		},
 		"globals": {
