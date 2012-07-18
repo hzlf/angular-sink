@@ -80,7 +80,9 @@ module.exports = function(grunt) {
 					'app/js/**/*.js',
 					'app/img/**/*',
 					'app/*.html',
-					'app/partials/**/*.html'
+					'app/partials/**/*.html',
+					'test/**/*.html',
+					'test/**/*.js'
 				],
 				tasks: 'reload'
 			},
