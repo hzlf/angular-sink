@@ -1,3 +1,5 @@
+// TODO: Not working yet. Fix this configuration
+//
 // *Testacular* runs tests on *real* browsers
 // (the default *grunt-jasmine-task* does a *headless* browser test)
 //

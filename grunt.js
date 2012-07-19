@@ -30,10 +30,13 @@ module.exports = function(grunt) {
 			compass: {
 				command: 'compass compile -c compass_config.rb'
 			},
-			// open chrome to do end to end testing
-			chrome_e2e_tests: {
+			// open chrome to do end to end testing and unit testing
+			chrome_tests: {
 				command: 'google-chrome --no-default-browser-check --no-first-run' +
-					'--disable-default-apps http://localhost:3000/test/runner_e2e.html'
+					'--disable-default-apps ' +
+					' http://localhost:3000/test/runner/runner.e2e.html' +
+					' http://localhost:3000/test/runner/runner.unit.head.html',
+				stdout: true
 			}
 		},
 
@@ -45,7 +48,7 @@ module.exports = function(grunt) {
 		// Jasmine headless test through PhantomJS
 		// https://github.com/creynders/grunt-jasmine-task
 		jasmine: {
-			unit: ['test/**/runner.html']
+			unit: ['test/**/runner/runner.unit.headless.html']
 		},
 
 
@@ -94,7 +97,7 @@ module.exports = function(grunt) {
 					'app/*.html',
 					'app/partials/**/*.html'
 				],
-				tasks: 'test'
+				tasks: 'test_headless'
 			}
 		},
 
@@ -116,6 +119,10 @@ module.exports = function(grunt) {
 		// -------------------
 		// Build configuration
 		// -------------------
+		// TODO: Missing rjs task. Needs to configure it.
+		//   See:   https://github.com/h5bp/node-build-script/issues/50#issuecomment-7092320
+		//     and: http://requirejs.org/docs/optimization.html#wholeproject
+		//     and: http://requirejs.org/docs/optimization.html#onejs
 
 		// Folder structure
 		//-----------------
@@ -183,10 +190,10 @@ module.exports = function(grunt) {
 	});
 
 
+
 	// -------------------
 	// Tasks configuration
 	// -------------------
-
 
 	//Additional plugin tasks
 	//-----------------------
@@ -198,6 +205,7 @@ module.exports = function(grunt) {
 	// node-build-script is gonna overwrite grunt server/reload task
 	// I want to keep the original grunt tasks
 	// TODO: Figure out a way to selectively load npmPlugin tasks
+	// so it doesn't need this ugly hack
 	grunt.renameTask('reload', '_reload');
 	grunt.renameTask('server', '_server');
 	grunt.loadNpmTasks('node-build-script');
@@ -207,19 +215,6 @@ module.exports = function(grunt) {
 	grunt.renameTask('_reload', 'reload');
 
 
-	// Default tasks
-	//--------------
-	// `grunt` & `grunt build`
-	// Sentinel task. Very useful in development mode
-	// Serve the app on localhost:8000/app and watch for file changes
-	// Run it w/ plain `grunt`
-	grunt.registerTask('default', 'server reload watch');
-
-	// Build task
-	// Builds a publish folder with the app ready to be deployed
-	// Run it with `grunt build`
-	grunt.renameTask('build', '_build'); // node-build-script gives a build task
-	grunt.registerTask('build', '_build:default');
 
 
 	//Preprocessor tasks
@@ -230,9 +225,8 @@ module.exports = function(grunt) {
 
 	// Testing tasks
 	// -------------
-	// `grunt test` & `grunt e2e`
-	grunt.registerTask('unit', 'jasmine:unit');
-	grunt.registerTask('test', 'unit'); // Default 'test' (alias to unit testing)
+	// grunt unit for fast headless unit tests
+	// grunt test for full real browser testing (unit and e2e)
 
 	// This task launches a simple server for testing purposes (e2e mainly)
 	var connect = require('connect');
@@ -240,12 +234,30 @@ module.exports = function(grunt) {
 	grunt.registerTask('server_testing', 'server for testing purposes', function() {
 		var base = path.resolve('.'), port = 3000;
 		var middleware = [connect.static(base), connect.directory(base)];
-		grunt.log.writeln('Starting test server at localhost:' + port + '/test/');
+		grunt.log.writeln('Starting test server at localhost:' + port);
 		connect.apply(null, middleware).listen(port);
 	});
+	// `grunt test_headless` & `grunt e2e`
+	grunt.registerTask('unit', 'jasmine:unit');
+	grunt.registerTask('test_headless', 'unit'); // Executes unit tests w/ phantomjs
+	// `test_head` task executes all the testing (unit and e2e) in a real browser
+	// End to end tests are not headless. Uses google-chrome by default
+	grunt.registerTask('test', 'server_testing shell:chrome_tests');
 
-	// End to end tests are not headless. Use google-chrome by default
-	grunt.registerTask('e2e', 'server_testing shell:chrome_e2e_tests');
 
+	// Default tasks
+	//--------------
+	// `grunt` & `grunt build`
+	// Sentinel task. Very useful in development mode
+	// Serve the app on localhost:8000/app and watch for file changes
+	// Run it w/ plain `grunt`
+	grunt.registerTask('default', 'server reload watch');
+	grunt.registerTask('default_head', 'server_testing reload watch');
+
+	// Build task
+	// Builds a publish folder with the app ready to be deployed
+	// Run it with `grunt build`
+	grunt.renameTask('build', '_build'); // node-build-script gives a build task
+	grunt.registerTask('build', '_build:default');
 
 };
