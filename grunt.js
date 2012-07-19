@@ -1,3 +1,15 @@
+// USAGE:
+//
+// grunt  --> Grunt keeps watching for file changes (hold terminal)
+//     On changes, run headless unit testing, trigger liveReload, lint, compile sass & coffee
+//
+// grunt test --> Runs full test suite on real browser (unit and end2end tests) (hold terminal)
+//
+// grunt unit --> Runs unit headless testing and exits
+// grunt lint --> Lints files using .jshintrc.json
+//
+
+
 // Grunt configuration:
 // https://github.com/cowboy/grunt/blob/master/docs/getting_started.md
 
@@ -252,7 +264,6 @@ module.exports = function(grunt) {
 	// Serve the app on localhost:8000/app and watch for file changes
 	// Run it w/ plain `grunt`
 	grunt.registerTask('default', 'server reload watch');
-	grunt.registerTask('default_head', 'server_testing reload watch');
 
 	// Build task
 	// Builds a publish folder with the app ready to be deployed
