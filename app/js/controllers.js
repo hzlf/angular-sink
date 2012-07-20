@@ -1,7 +1,8 @@
 function PhoneListCtrl($scope, $http) {
 
 	$http.get('data/phones.json').success(function(data) {
-		$scope.phones = data.splice(0, 5);
+		//$scope.phones = data.splice(0, 5);
+		$scope.phones = data;
 	});
 
 	$scope.hello = "Hello World!";

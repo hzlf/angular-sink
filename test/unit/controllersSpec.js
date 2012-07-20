@@ -34,29 +34,27 @@ describe('PhoneCat controllers', function() {
 			expect(scope.orderProp).toBe('age');
 		});
 
-		it('should splice the phone list up to 5 maximum phones', inject(function($controller) {
-			// adjust phones list to have more than 5 phones
-			phones = [
-				{name: 'Nexus S'},
-				{name: 'Motorola DROID'},
-				{name: 'Motorola DROID 2'},
-				{name: 'Nexus S 2'},
-				{name: 'Nexus S 3'},
-				{name: 'Nexus S 4'},
-				{name: 'Nexus S 5'}
-			];
-			$httpBackend.expectGET('data/phones.json')
-				.respond(phones);
+		//it('should splice the phone list up to 5 maximum phones', inject(function($controller) {
+			//// adjust phones list to have more than 5 phones
+			//phones = [
+				//{name: 'Nexus S'},
+				//{name: 'Motorola DROID'},
+				//{name: 'Motorola DROID 2'},
+				//{name: 'Nexus S 2'},
+				//{name: 'Nexus S 3'},
+				//{name: 'Nexus S 4'},
+				//{name: 'Nexus S 5'}
+			//];
+			//$httpBackend.expectGET('data/phones.json')
+				//.respond(phones);
 
-			expect(scope.phones).toBeUndefined();
-			// Construct again the controller (and browser request queue) and flush
-			ctrl = $controller(PhoneListCtrl, {$scope: scope});
-			$httpBackend.flush();
+			//expect(scope.phones).toBeUndefined();
+			//// Construct again the controller (and browser request queue) and flush
+			//ctrl = $controller(PhoneListCtrl, {$scope: scope});
+			//$httpBackend.flush();
 
-			expect(scope.phones.length).toEqual(5);
-
-
-		}));
+			//expect(scope.phones.length).toEqual(5);
+		//}));
 
 	});
 

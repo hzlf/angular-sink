@@ -7,13 +7,13 @@ describe('PhoneCat App', function() {
 		});
 
 		it('should filter the phone list as user types into the search box', function() {
-			expect(repeater('.phones li').count()).toBe(5);
+			expect(repeater('.phones li').count()).toBe(20);
 
 			input('query').enter('samsung');
-			expect(repeater('.phones li').count()).toBe(1);
+			expect(repeater('.phones li').count()).toBe(5);
 
 			input('query').enter('motorola');
-			expect(repeater('.phones li').count()).toBe(3);
+			expect(repeater('.phones li').count()).toBe(8);
 		});
 
 		it('should display the current filter value within an element with id "status"', function () {
@@ -37,6 +37,12 @@ describe('PhoneCat App', function() {
 			expect(repeater('.phones li', 'Phones List').column('phone.name')).
 				toEqual(['MOTOROLA XOOM\u2122', 'Motorola XOOM\u2122 with Wi-Fi']);
 
+		});
+
+		it('should render phone specific links', function() {
+			input('query').enter('nexus');
+			element('.phones li a').click();
+			expect(browser().location().url()).toBe('/phones/nexus-s');
 		});
 
 	});
