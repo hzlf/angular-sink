@@ -254,7 +254,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('test_headless', 'unit'); // Executes unit tests w/ phantomjs
 	// `test_head` task executes all the testing (unit and e2e) in a real browser
 	// End to end tests are not headless. Uses google-chrome by default
-	grunt.registerTask('test', 'server_testing shell:chrome_tests');
+	grunt.registerTask('test', 'server_testing shell:chrome_tests watch');
 
 
 	// Default tasks
