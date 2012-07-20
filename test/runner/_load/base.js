@@ -10,6 +10,7 @@ var _scripts = [
 
 	// base vendor js
 	'../app/vendor/angular.min.js',
+	'lib/angular/angular-mocks.js',
 
 	// app js
 	'../app/js/app.js',

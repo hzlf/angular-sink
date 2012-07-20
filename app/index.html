@@ -49,22 +49,30 @@ chromium.org/developers/how-tos/chrome-frame-getting-started -->
 
 	<div class="container">
 	
-		<p>We have {{ phones.length }} phones here.</p>
 
-		<div class="one-third columns">
-			<p>Search: <input ng-model="query"></p>
-			<p id="status">Current filter: {{ query }}</p>
-			<div class="sort">
+		<div class="row container">
+			<h2>Search the phones</h2>
+			<div class="four columns">
+				<p>
+					<p>Search: <input ng-model="query"></p>
+					<p id="status">Current filter: {{ query }}</p>
+				</p>
+			</div>
+			<div class="sort four columns">
+				<p>
 				Sort by:
 					<select ng-model="orderProp">
 						<option value="name">Alphabetical</option>
 						<option value="age">Newest</option>
 					</select>
+				</p>
 			</div>
 			
 		</div>
 
-		<div class="two-thirds columns">
+		<div class="">
+			<h2>Phones</h2>
+			<p>We have {{ phones.length }} phones here.</p>
 			<ul class=phones>
 				<li ng-repeat="phone in phones | filter:query | orderBy:orderProp">
 					{{ phone.name }}
@@ -79,6 +87,12 @@ chromium.org/developers/how-tos/chrome-frame-getting-started -->
 				<!--<td>{{ i + 1 }}</td>-->
 			<!--</tr>-->
 		<!--</table>-->
+
+		<div class="jsonBox">
+			<h2>Phones - JSON</h2>
+			{{ phones | json }}
+		  
+		</div>
 		
 	</div><!-- container -->
 

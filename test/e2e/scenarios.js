@@ -7,13 +7,13 @@ describe('PhoneCat App', function() {
 		});
 
 		it('should filter the phone list as user types into the search box', function() {
-			expect(repeater('.phones li').count()).toBe(3);
+			expect(repeater('.phones li').count()).toBe(5);
 
-			input('query').enter('nexus');
+			input('query').enter('samsung');
 			expect(repeater('.phones li').count()).toBe(1);
 
 			input('query').enter('motorola');
-			expect(repeater('.phones li').count()).toBe(2);
+			expect(repeater('.phones li').count()).toBe(3);
 		});
 
 		it('should display the current filter value within an element with id "status"', function () {
@@ -30,12 +30,12 @@ describe('PhoneCat App', function() {
 			//let's narrow dow the dataset to make the test assertions shorter
 			input('query').enter('tablet');
 			expect(repeater('.phones li', 'Phone List').column('phone.name')).
-				toEqual(['Motorola XOOM with Wi-Fi', 'MOTOROLA XOOM']);
+				toEqual(['Motorola XOOM\u2122 with Wi-Fi', 'MOTOROLA XOOM\u2122']);
 
 			select('orderProp').option('Alphabetical');
 
 			expect(repeater('.phones li', 'Phones List').column('phone.name')).
-				toEqual(['MOTOROLA XOOM', 'Motorola XOOM with Wi-Fi']);
+				toEqual(['MOTOROLA XOOM\u2122', 'Motorola XOOM\u2122 with Wi-Fi']);
 
 		});
 
