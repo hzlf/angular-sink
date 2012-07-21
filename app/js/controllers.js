@@ -8,7 +8,14 @@ function PhoneListCtrl($scope, $http) {
 	$scope.hello = "Hello World!";
 	$scope.orderProp = 'age';
 }
-
 // Inject this ordered list of services into this controller.
 // Also this avoid any minification issues w/ services names.
 PhoneListCtrl.$inject = ['$scope', '$http'];
+
+
+
+function PhoneDetailCtrl($scope, $routeParams) {
+	$scope.phoneId = $routeParams.phoneId;
+}
+PhoneDetailCtrl.$inject = ['$scope', '$routeParams'];
+

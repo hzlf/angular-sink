@@ -1,0 +1,48 @@
+<div class="container">
+
+	<div class="row container">
+		<h2>Search the phones</h2>
+		<div class="four columns">
+			<p>
+				<p>Search: <input ng-model="query"></p>
+				<p id="status">Current filter: {{ query }}</p>
+			</p>
+		</div>
+		<div class="sort four columns">
+			<p>
+			Sort by:
+				<select ng-model="orderProp">
+					<option value="name">Alphabetical</option>
+					<option value="age">Newest</option>
+				</select>
+			</p>
+		</div>
+		
+	</div>
+
+	<div class="">
+		<h2>Phones</h2>
+		<p>We have {{ phones.length }} phones here.</p>
+		<ul class=phones>
+			<li ng-repeat="phone in phones | filter:query | orderBy:orderProp">
+				<a href="#/phones/{{ phone.id }}" class="thumb"><img ng-src="{{ phone.imageUrl }}"/></a>
+				<a href="#/phones/{{ phone.id }}">{{ phone.name }}</a>
+				<p>{{ phone.snippet }}</p>
+			</li>
+		</ul>
+	</div>
+
+	<!--<table>-->
+		<!--<tr> <th>row number</th> </tr>-->
+		<!--<tr ng-repeat="i in [0, 1, 2, 3, 4, 5]">-->
+			<!--<td>{{ i + 1 }}</td>-->
+		<!--</tr>-->
+	<!--</table>-->
+
+	<div class="jsonBox">
+		<h2>Phones - JSON</h2>
+		{{ phones | json }}
+		
+	</div>
+	
+</div><!-- container -->
