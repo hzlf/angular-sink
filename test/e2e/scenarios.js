@@ -72,8 +72,6 @@ describe('PhoneCat App', function() {
 			expect(element('.phone-thumbs li img').count()).toBe(4);
 		});
 
-
-			
 	});
 	
 

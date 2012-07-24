@@ -14,7 +14,8 @@ var _scripts = [
 
 	// app js
 	'../app/js/app.js',
-	'../app/js/controllers.js'
+	'../app/js/controllers.js',
+	'../app/js/filters.js'
 ];
 
 

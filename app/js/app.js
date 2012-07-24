@@ -1,4 +1,4 @@
-var app = angular.module('phonecat', []);
+var app = angular.module('phonecat', ['phonecatFilters']);
 
 app.config([
 	'$routeProvider', function($routeProvider) {
