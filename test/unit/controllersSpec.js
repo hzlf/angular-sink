@@ -1,3 +1,5 @@
+/*global PhoneListCtrl, PhoneDetailCtrl */
+
 describe('PhoneCat controllers', function() {
 
 	describe('PhoneListCtrl', function() {
@@ -9,7 +11,7 @@ describe('PhoneCat controllers', function() {
 			phones = [{name: 'Nexus S'}, { name: 'Motorola DROID' }];
 			$httpBackend = _$httpBackend_;
 			// train the mock to match some expectations
-			$httpBackend.expectGET('data/phones.json')
+			$httpBackend.expectGET('data/phones/phones.json')
 				.respond(phones);
 			
 			// create a new scope from the angular root scope
@@ -45,7 +47,7 @@ describe('PhoneCat controllers', function() {
 				//{name: 'Nexus S 4'},
 				//{name: 'Nexus S 5'}
 			//];
-			//$httpBackend.expectGET('data/phones.json')
+			//$httpBackend.expectGET('data/phones/phones.json')
 				//.respond(phones);
 
 			//expect(scope.phones).toBeUndefined();
@@ -57,6 +59,26 @@ describe('PhoneCat controllers', function() {
 		//}));
 
 	});
+
+	describe('PhoneDetailCtrl', function() {
+		var scope, $httpBackend, ctrl;
+
+		beforeEach(inject(function(_$httpBackend_, $rootScope, $routeParams, $controller) {
+			$httpBackend = _$httpBackend_;
+			$httpBackend.expectGET('data/phones/xyz.json').respond({name: 'phone xyz'});
+
+			$routeParams.phoneId = 'xyz';
+			scope = $rootScope.$new();
+			ctrl = $controller(PhoneDetailCtrl, {$scope: scope});
+		}));
+
+		it('should fetch phone detail', function() {
+			expect(scope.phone).toBeUndefined();
+			$httpBackend.flush();
+			expect(scope.phone).toEqual({name: 'phone xyz'});
+		});
+	});
+	
 
 
 });

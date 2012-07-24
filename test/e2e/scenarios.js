@@ -60,13 +60,19 @@ describe('PhoneCat App', function() {
 			browser().navigateTo('../../app/index.html#/phones/nexus-s');
 		});
 
-		it('should display placeholder page with phoneId', function() {
-			expect(binding('phoneId')).toBe('nexus-s');
+		//it('should display placeholder page with phoneId', function() {
+			//expect(binding('phoneId')).toBe('nexus-s');
+		//});
+
+		it('should display nexus-s page', function() {
+			expect(binding('phone.name')).toBe('Nexus S');
+		});
+
+		it('should have 4 thumbnails on the nexus-s page', function() {
+			expect(element('.phone-thumbs li img').count()).toBe(4);
 		});
 
 
-
-			
 			
 	});
 	

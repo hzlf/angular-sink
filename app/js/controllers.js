@@ -1,6 +1,6 @@
 function PhoneListCtrl($scope, $http) {
 
-	$http.get('data/phones.json').success(function(data) {
+	$http.get('data/phones/phones.json').success(function(data) {
 		//$scope.phones = data.splice(0, 5);
 		$scope.phones = data;
 	});
@@ -14,8 +14,11 @@ PhoneListCtrl.$inject = ['$scope', '$http'];
 
 
 
-function PhoneDetailCtrl($scope, $routeParams) {
+function PhoneDetailCtrl($scope, $routeParams, $http) {
+	$http.get('data/phones/' + $routeParams.phoneId + '.json').success(function(data) {
+		$scope.phone = data;
+	});
 	$scope.phoneId = $routeParams.phoneId;
 }
-PhoneDetailCtrl.$inject = ['$scope', '$routeParams'];
+PhoneDetailCtrl.$inject = ['$scope', '$routeParams', '$http'];
 
