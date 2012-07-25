@@ -61,11 +61,12 @@ describe('PhoneCat controllers', function() {
 	});
 
 	describe('PhoneDetailCtrl', function() {
-		var scope, $httpBackend, ctrl;
+		var scope, $httpBackend, ctrl, phone;
 
 		beforeEach(inject(function(_$httpBackend_, $rootScope, $routeParams, $controller) {
+			phone = ({name: 'phone xyz', images: ['img1', 'img2']});
 			$httpBackend = _$httpBackend_;
-			$httpBackend.expectGET('data/phones/xyz.json').respond({name: 'phone xyz'});
+			$httpBackend.expectGET('data/phones/xyz.json').respond(phone);
 
 			$routeParams.phoneId = 'xyz';
 			scope = $rootScope.$new();
@@ -75,7 +76,21 @@ describe('PhoneCat controllers', function() {
 		it('should fetch phone detail', function() {
 			expect(scope.phone).toBeUndefined();
 			$httpBackend.flush();
-			expect(scope.phone).toEqual({name: 'phone xyz'});
+			expect(scope.phone).toEqual(phone);
+		});
+
+		it('should put a mainImage property on the controller scope', function() {
+			expect(scope.mainImageUrl).toBeUndefined();
+			$httpBackend.flush();
+			expect(scope.mainImageUrl).toEqual('img1');
+		});
+
+		it('should have a "set main image" function on the controller scope', function() {
+			$httpBackend.flush();
+			scope.setImage('img2');
+			expect(scope.mainImageUrl).toEqual('img2');
+			scope.setImage('img1');
+			expect(scope.mainImageUrl).toEqual('img1');
 		});
 	});
 	

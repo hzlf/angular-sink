@@ -15,10 +15,20 @@ PhoneListCtrl.$inject = ['$scope', '$http'];
 
 
 function PhoneDetailCtrl($scope, $routeParams, $http) {
+	$scope.phoneId = $routeParams.phoneId;
 	$http.get('data/phones/' + $routeParams.phoneId + '.json').success(function(data) {
 		$scope.phone = data;
+		$scope.mainImageUrl = data.images[0];
 	});
-	$scope.phoneId = $routeParams.phoneId;
+	
+	$scope.setImage = function(imageUrl) {
+		$scope.mainImageUrl = imageUrl;
+	};
+
+	$scope.hello = function(name) {
+		alert('Hello ' + (name || 'world') + '!');
+	};
+
 }
 PhoneDetailCtrl.$inject = ['$scope', '$routeParams', '$http'];
 
