@@ -101,6 +101,10 @@ module.exports = function(grunt) {
 				],
 				tasks: 'reload'
 			},
+			lint: {
+				files: ['app/js/**/*.js', 'test/**/*.js'],
+				tasks: 'lint'
+			},
 			test: {
 				files: [
 					'test/**/*.html',
