@@ -43,7 +43,10 @@
 
 	"src": {
 		"globals": {
-			"jQuery": true
+                        "alert": true,
+                        "console": true,
+			"jQuery": true,
+                        "angular": true
 		}
 	},
 
@@ -69,7 +72,10 @@
 			]
 		},
 		"globals": {
-			"jasmine": true
+                        "alert": true,
+                        "console": true,
+			"jQuery": true,
+                        "angular": true
 		}
 	}
 
