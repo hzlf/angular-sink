@@ -6,7 +6,8 @@ var baseUrl = '../';
 
 var _testcases = [
 	'unit/controllersSpec.js',
-	'unit/filtersSpec.js'
+	'unit/filtersSpec.js',
+	'unit/servicesSpec.js'
 ];
 
 

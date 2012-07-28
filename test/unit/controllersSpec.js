@@ -64,7 +64,7 @@ describe('PhoneCat controllers', function() {
 		var scope, $httpBackend, ctrl, phone;
 
 		beforeEach(inject(function(_$httpBackend_, $rootScope, $routeParams, $controller) {
-			phone = ({name: 'phone xyz', images: ['img1', 'img2']});
+			phone = {name: 'phone xyz', images: ['img1', 'img2']};
 			$httpBackend = _$httpBackend_;
 			$httpBackend.expectGET('data/phones/xyz.json').respond(phone);
 

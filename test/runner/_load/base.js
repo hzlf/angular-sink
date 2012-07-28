@@ -10,12 +10,14 @@ var _scripts = [
 
 	// base vendor js
 	'../app/vendor/angular.min.js',
+	'../app/vendor/angular-resource.js',
 	'lib/angular/angular-mocks.js',
 
 	// app js
 	'../app/js/app.js',
 	'../app/js/controllers.js',
-	'../app/js/filters.js'
+	'../app/js/filters.js',
+	'../app/js/services.js'
 ];
 
 
