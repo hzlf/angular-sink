@@ -1,6 +1,11 @@
-/*global PhoneListCtrl, PhoneDetailCtrl */
+/*global TestUtils, PhoneListCtrl, PhoneDetailCtrl */
 
 describe('PhoneCat controllers', function() {
+
+	beforeEach(function() {
+		module('phonecatServices');
+		this.addMatchers(TestUtils.matchers);
+	});
 
 	describe('PhoneListCtrl', function() {
 
@@ -18,14 +23,15 @@ describe('PhoneCat controllers', function() {
 			scope = $rootScope.$new();
 			// binds the scope to our System Under Test (the phone list controller)
 			ctrl = $controller(PhoneListCtrl, {$scope: scope});
+
 		}));
 
 		it('should create "phones" model with 2 phones fetched from xhr', function() {
 			// initially the scope of our SUT should not know any phones at all
-			expect(scope.phones).toBeUndefined();
+			expect(scope.phones).toEqual([]);
 			$httpBackend.flush(); // flush the xhr request queue in the browser
 			// is our SUT really fetching the data and populating its scope ?
-			expect(scope.phones).toEqual([{name: 'Nexus S'}, {name: 'Motorola DROID'}]);
+			expect(scope.phones).toEqualData(phones);
 		});
 
 		it('should create a Welcome message', function() {
@@ -35,6 +41,7 @@ describe('PhoneCat controllers', function() {
 		it('should set the default value of orderProp model', function() {
 			expect(scope.orderProp).toBe('age');
 		});
+
 
 		//it('should splice the phone list up to 5 maximum phones', inject(function($controller) {
 			//// adjust phones list to have more than 5 phones
@@ -74,13 +81,13 @@ describe('PhoneCat controllers', function() {
 		}));
 
 		it('should fetch phone detail', function() {
-			expect(scope.phone).toBeUndefined();
+			expect(scope.phone).toEqualData({});
 			$httpBackend.flush();
-			expect(scope.phone).toEqual(phone);
+			expect(scope.phone).toEqualData(phone);
 		});
 
 		it('should put a mainImage property on the controller scope', function() {
-			expect(scope.mainImageUrl).toBeUndefined();
+			expect(scope.phone).toEqualData({});
 			$httpBackend.flush();
 			expect(scope.mainImageUrl).toEqual('img1');
 		});

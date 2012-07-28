@@ -1,16 +1,12 @@
-/*global Phone */
+/*global TestUtils, Phone */
 
 describe('PhoneCat Services', function() {
 
 	beforeEach(function(){
-
 		module('phonecatServices');
-
-		this.addMatchers({
-			toEqualData: function(expected) {
-				return angular.equals(this.actual, expected);
-			}
-		});
+		
+		// we are gonna use toEqualData here
+		this.addMatchers(TestUtils.matchers);
 	});
 
 

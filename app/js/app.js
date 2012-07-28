@@ -1,3 +1,6 @@
+/* JSHint global definitions */
+/*global PhoneListCtrl, PhoneDetailCtrl */
+
 var app = angular.module('phonecat', ['phonecatFilters', 'phonecatServices']);
 
 app.config([

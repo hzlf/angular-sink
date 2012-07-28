@@ -13,6 +13,9 @@ var _scripts = [
 	'../app/vendor/angular-resource.js',
 	'lib/angular/angular-mocks.js',
 
+	// utils test (helpers)
+	'utils.js',
+
 	// app js
 	'../app/js/app.js',
 	'../app/js/controllers.js',
