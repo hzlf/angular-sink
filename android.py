@@ -91,22 +91,27 @@ def build():
 
 
 def launch():
+    _run('bash {0}cordova/cordova launch'.format(ANDROID_DIR))
+
+
+def emulate():
     _run('bash {0}cordova/emulate'.format(ANDROID_DIR))
 
 
 if __name__ == '__main__':
 
-    def show_usage():
-        usage = 'Usage: {0} [build] [launch]'.format(sys.argv[0])
+    handlers = {'build': build,
+                'launch': launch,
+                'emulate': emulate}
+
+    def _show_usage():
+        usage = 'Usage: {0} [option] | Options: '.format(__file__)
+        usage += ' '.join(handlers.keys())
         print usage
 
-    argv = sys.argv[1:]
-    argc = len(argv)
+    try:
+        option = sys.argv[1]
+    except IndexError:
+        option = None
 
-    if argc < 1:
-        show_usage()
-        sys.exit(1)
-
-    handlers = {'build': build,
-                'launch': launch}
-    handlers.get(argv[0], show_usage)()
+    handlers.get(option, _show_usage)()
